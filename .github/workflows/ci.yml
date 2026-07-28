@@ -1,0 +1,47 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.11", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install
+        run: pip install -e ".[dev]"
+
+      - name: Lint
+        run: ruff check src tests tools eval
+
+      - name: Format check
+        run: ruff format --check src tests tools eval
+
+      - name: Test
+        run: pytest -q
+
+      - name: Evaluation harness runs
+        run: python eval/run_eval.py --json > /dev/null
+
+  publishable:
+    # Guards the property the repository depends on: nothing private ever lands
+    # here. Runs on every change, not only releases, because a leak is only
+    # cheap to fix before it is pushed.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Scan for secrets, personal data and internal identifiers
+        run: python tools/scan_secrets.py --fail-on medium
