@@ -1,0 +1,176 @@
+{
+  "schema_version": "1.0.0",
+  "dataset_version": "0.1.0-synthetic",
+  "domain": "coffee roasting laboratory (fictional)",
+  "provenance": "Entirely invented for illustration. No real organisation, person, product or measurement appears here. Replace it with your own questions before trusting any number it produces.",
+  "notes": "Every question names the document that should be cited. must_abstain cases have no correct source: the system passes by declining to cite anything, and fails by citing something.",
+  "documents": [
+    {
+      "source_id": "doc-roast-001",
+      "title": "Ethiopia Yirgacheffe — roast profile v3",
+      "scope": "roast-profiles",
+      "text": "Charge temperature 196C. First crack observed at 8:42 with bean temperature 201C. Development time ratio 21%. Total roast 11:05, drop temperature 210C. Airflow raised to setting 4 at 7:30. Batch size 1.2 kg green."
+    },
+    {
+      "source_id": "doc-roast-002",
+      "title": "Colombia Huila — roast profile v3",
+      "scope": "roast-profiles",
+      "text": "Charge temperature 202C. First crack at 9:10, bean temperature 203C. Development time ratio 24%. Total roast 12:00, drop temperature 213C. Batch size 1.2 kg green. Airflow held at setting 3 throughout."
+    },
+    {
+      "source_id": "doc-cup-014",
+      "title": "Cupping session 2031-03-04",
+      "scope": "cupping",
+      "text": "Panel of five. Ethiopia Yirgacheffe v3 scored 86.5 overall; notes of bergamot and stone fruit, acidity bright. Colombia Huila v3 scored 84.0; heavier body, cocoa finish, acidity muted. Two panellists flagged the Huila as slightly baked."
+    },
+    {
+      "source_id": "doc-eq-007",
+      "title": "Roaster maintenance log — Q1",
+      "scope": "equipment",
+      "text": "2031-01-12 replaced chaff collector gasket. 2031-02-03 recalibrated bean probe; offset was reading 4C low before adjustment. 2031-03-01 drum bearing inspected, no play detected. Next probe calibration due 2031-08-03."
+    },
+    {
+      "source_id": "doc-green-022",
+      "title": "Green inventory and moisture",
+      "scope": "inventory",
+      "text": "Ethiopia Yirgacheffe lot 7734: 42 kg remaining, moisture 10.8%, water activity 0.55. Colombia Huila lot 8120: 61 kg remaining, moisture 11.4%, water activity 0.58. Both stored at 18C, 55% RH."
+    }
+  ],
+  "questions": [
+    {
+      "id": "q01",
+      "question": "What was the drop temperature on the Ethiopia Yirgacheffe v3 roast?",
+      "type": "specific_value",
+      "expected_source_ids": ["doc-roast-001"],
+      "scope": null,
+      "must_abstain": false,
+      "rationale": "210C, stated directly in the roast profile."
+    },
+    {
+      "id": "q02",
+      "question": "Which coffee scored higher at the March cupping, and by how much?",
+      "type": "comparison",
+      "expected_source_ids": ["doc-cup-014"],
+      "scope": null,
+      "must_abstain": false,
+      "rationale": "Ethiopia 86.5 vs Colombia 84.0 — a 2.5 point difference, both in one document."
+    },
+    {
+      "id": "q03",
+      "question": "Compare the development time ratios of the two v3 profiles.",
+      "type": "multi_source",
+      "expected_source_ids": ["doc-roast-001", "doc-roast-002"],
+      "scope": null,
+      "must_abstain": false,
+      "rationale": "21% vs 24% — requires both profiles, so it tests that the per-source cap still admits two documents."
+    },
+    {
+      "id": "q04",
+      "question": "When is the next bean probe calibration due?",
+      "type": "specific_value",
+      "expected_source_ids": ["doc-eq-007"],
+      "scope": null,
+      "must_abstain": false,
+      "rationale": "2031-08-03, in the maintenance log."
+    },
+    {
+      "id": "q05",
+      "question": "What is the water activity of the Colombia Huila green lot?",
+      "type": "specific_value",
+      "expected_source_ids": ["doc-green-022"],
+      "scope": null,
+      "must_abstain": false,
+      "rationale": "0.58. Near-duplicate wording to the Ethiopia entry, so it tests that the right row is read."
+    },
+    {
+      "id": "q06",
+      "question": "In the roast-profiles notebook, what airflow setting was used for the Ethiopia?",
+      "type": "scoped",
+      "expected_source_ids": ["doc-roast-001"],
+      "scope": ["roast-profiles"],
+      "must_abstain": false,
+      "rationale": "Names its container, so it exercises scope detection."
+    },
+    {
+      "id": "q07",
+      "question": "What was the charge temperature for the Colombia Huila?",
+      "type": "specific_value",
+      "expected_source_ids": ["doc-roast-002"],
+      "scope": null,
+      "must_abstain": false,
+      "rationale": "202C. The Ethiopia profile states 196C for the same field — a conflation trap."
+    },
+    {
+      "id": "q08",
+      "question": "How much Ethiopia Yirgacheffe green is left in stock?",
+      "type": "specific_value",
+      "expected_source_ids": ["doc-green-022"],
+      "scope": null,
+      "must_abstain": false,
+      "rationale": "42 kg."
+    },
+    {
+      "id": "q09",
+      "question": "What did the panel say about the Huila's body?",
+      "type": "qualitative",
+      "expected_source_ids": ["doc-cup-014"],
+      "scope": null,
+      "must_abstain": false,
+      "rationale": "Heavier body, cocoa finish — prose rather than a number."
+    },
+    {
+      "id": "q10",
+      "question": "What was the probe offset error before the February recalibration?",
+      "type": "specific_value",
+      "expected_source_ids": ["doc-eq-007"],
+      "scope": null,
+      "must_abstain": false,
+      "rationale": "Reading 4C low."
+    },
+    {
+      "id": "q11",
+      "question": "What was the drop temperature on the Kenya Nyeri roast?",
+      "type": "absent_entity",
+      "expected_source_ids": [],
+      "scope": null,
+      "must_abstain": true,
+      "rationale": "No Kenya document exists. The failure mode is answering with the Ethiopia or Colombia value."
+    },
+    {
+      "id": "q12",
+      "question": "What is our target moisture specification for incoming green coffee?",
+      "type": "absent_fact",
+      "expected_source_ids": [],
+      "scope": null,
+      "must_abstain": true,
+      "rationale": "Measured moisture values exist; a target specification does not. Tests measurement-vs-specification confusion."
+    },
+    {
+      "id": "q13",
+      "question": "Who roasted the Ethiopia batch on 2031-03-04?",
+      "type": "absent_fact",
+      "expected_source_ids": [],
+      "scope": null,
+      "must_abstain": true,
+      "rationale": "No operator is recorded anywhere."
+    },
+    {
+      "id": "q14",
+      "question": "How long after first crack was the Ethiopia dropped?",
+      "type": "derived",
+      "expected_source_ids": ["doc-roast-001"],
+      "scope": null,
+      "must_abstain": false,
+      "rationale": "11:05 minus 8:42 = 2:23. Requires arithmetic over cited values, not a lookup."
+    },
+    {
+      "id": "q15",
+      "question": "Both v3 profiles used the same batch size — what was it?",
+      "type": "multi_source",
+      "expected_source_ids": ["doc-roast-001", "doc-roast-002"],
+      "scope": null,
+      "must_abstain": false,
+      "rationale": "1.2 kg green in both. Either document alone justifies the value; citing both is ideal."
+    }
+  ]
+}

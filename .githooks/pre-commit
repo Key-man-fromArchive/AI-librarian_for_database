@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# Blocks a commit that would add secrets, personal data or internal hostnames.
+#
+# Enable once per clone:
+#     git config core.hooksPath .githooks
+#
+# The scanner redacts what it finds, so its output is safe to paste into an
+# issue or a review comment.
+set -euo pipefail
+
+repo_root="$(git rev-parse --show-toplevel)"
+python3 "${repo_root}/tools/scan_secrets.py" --staged --fail-on medium

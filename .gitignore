@@ -1,0 +1,33 @@
+# Secrets — never commit. The scanner in tools/ is the backstop, not the plan.
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+credentials.json
+service-account*.json
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+.venv/
+venv/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# Editors / OS
+.idea/
+.vscode/
+.DS_Store
+
+# Local evaluation goldsets: these contain your real questions and document
+# ids, which is exactly the material that should not be published by accident.
+eval/goldset.local.json
+eval/*.local.json
+eval/results/
